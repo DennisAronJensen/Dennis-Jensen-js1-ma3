@@ -21,13 +21,41 @@ const url = "https://api.rawg.io/api/games?dates=2019-01-01,2019-12-31&ordering=
 async function api(){
     const getApi = await fetch(url);
     
-    for (let i = 8; i < getApi.length; i++) {
-        const x = getApi[i];
-        
-    }
-    document.getElementsByClassName("list").innerHTML = "url"
+    const games = await getApi.json();
 
-    console.log(getApi);
+    let gamesReturn = ""
+
+    for (let i = 0; i < 8; i++){
+
+        const x = games.results[i];
+
+        gamesReturn += `
+        <div>
+            <h4>${x.name}</h4>
+            <p>${x.rating}</p>
+            <p>${x.tags.length}</p>
+        </div> `;
+    }
+    document.getElementsByClassName("list")[0].innerHTML = gamesReturn
+
+}
+api();
+
+const results = document.querySelector(".results");
+
+
+
+try {
+    api();
+    console.log("Ok");
+    results.innerHTML = "Ok";
 }
 
-api();
+catch{
+    console.log("Not ok");
+    results.innerHTML = "Not ok";
+}
+finally{
+    console.log("Complete")
+}
+
